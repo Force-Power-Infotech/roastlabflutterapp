@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../shell/roastlab_shell.dart';
+import '../screens/welcome_page.dart';
 import '../theme/roastlab_theme.dart';
 
 class RoastLabApp extends StatelessWidget {
@@ -12,7 +12,7 @@ class RoastLabApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'RoastLab',
       theme: roastLabTheme,
-      home: const RoastLabShell(),
+      home: const WelcomePage(),
     );
   }
 }

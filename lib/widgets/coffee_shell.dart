@@ -37,7 +37,7 @@ class CoffeeShell extends StatelessWidget {
                           subtitle,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
-                                color: Colors.white.withValues(alpha: 0.68),
+                                color: Colors.black.withValues(alpha: 0.62),
                               ),
                         ),
                       ],
@@ -66,7 +66,7 @@ class _BackgroundGlow extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF120E0C), Color(0xFF090807), Color(0xFF17120E)],
+          colors: [Color(0xFFF7F3EC), Color(0xFFFCFAF6), Color(0xFFF1ECE4)],
           stops: [0.0, 0.56, 1.0],
         ),
       ),
@@ -75,17 +75,17 @@ class _BackgroundGlow extends StatelessWidget {
           Positioned(
             top: -80,
             left: -40,
-            child: _GlowBlob(size: 180, color: Color(0x33D39B5B)),
+            child: _GlowBlob(size: 180, color: Color(0x332A9D8F)),
           ),
           Positioned(
             top: 120,
             right: -60,
-            child: _GlowBlob(size: 220, color: Color(0x224E342F)),
+            child: _GlowBlob(size: 220, color: Color(0x22F4A261)),
           ),
           Positioned(
             bottom: 140,
             left: 24,
-            child: _GlowBlob(size: 140, color: Color(0x22C57A57)),
+            child: _GlowBlob(size: 140, color: Color(0x22347EA2)),
           ),
         ],
       ),
@@ -121,11 +121,11 @@ class _TopBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.06),
+        color: Colors.white.withValues(alpha: 0.8),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.08)),
       ),
-      child: const Icon(Icons.bolt_rounded, size: 18, color: Color(0xFFE7B15E)),
+      child: const Icon(Icons.bolt_rounded, size: 18, color: Color(0xFF2A9D8F)),
     );
   }
 }

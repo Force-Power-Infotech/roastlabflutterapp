@@ -20,7 +20,7 @@ class SectionHeader extends StatelessWidget {
               Text(
                 subtitle,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.64),
+                  color: Colors.black.withValues(alpha: 0.56),
                 ),
               ),
             ],
@@ -30,7 +30,7 @@ class SectionHeader extends StatelessWidget {
         Container(
           width: 54,
           height: 1,
-          color: const Color(0xFFE7B15E).withValues(alpha: 0.35),
+          color: const Color(0xFF2A9D8F).withValues(alpha: 0.35),
         ),
       ],
     );

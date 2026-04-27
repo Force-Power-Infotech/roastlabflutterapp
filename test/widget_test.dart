@@ -4,17 +4,35 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:roastlab/main.dart';
 
 void main() {
-  testWidgets('shows the RoastLab shell', (WidgetTester tester) async {
+  testWidgets('shows onboarding and complete app flow', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const MyApp());
 
-    expect(find.text('RoastLab'), findsWidgets);
-    expect(find.text('Coffee with a sharper aesthetic.'), findsOneWidget);
+    expect(find.text('RoastLab'), findsOneWidget);
+    expect(find.text('Enter App'), findsOneWidget);
+
+    await tester.tap(find.text('Enter App'));
+    await tester.pumpAndSettle();
+
     expect(find.byType(NavigationBar), findsOneWidget);
+    expect(find.text('RoastLab'), findsOneWidget);
 
     await tester.tap(find.text('Brew'));
     await tester.pumpAndSettle();
 
     expect(find.text('Brew Studio'), findsOneWidget);
-    expect(find.text('Brew like it is styled.'), findsOneWidget);
+
+    await tester.tap(find.text('Roast'));
+    await tester.pumpAndSettle();
+    expect(find.text('Roast Shelf'), findsOneWidget);
+
+    await tester.tap(find.text('Feed'));
+    await tester.pumpAndSettle();
+    expect(find.text('Community'), findsOneWidget);
+
+    await tester.tap(find.text('You'));
+    await tester.pumpAndSettle();
+    expect(find.text('Your Profile'), findsOneWidget);
   });
 }

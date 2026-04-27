@@ -16,25 +16,35 @@ class RoastLabShell extends StatefulWidget {
 class _RoastLabShellState extends State<RoastLabShell> {
   int _selectedIndex = 0;
 
-  static const _pages = <Widget>[
-    HomeDashboard(),
-    BrewStudioPage(),
-    RoastShelfPage(),
-    CommunityFeedPage(),
-    ProfilePage(),
-  ];
+  void _navigateToTab(int index) {
+    if (index < 0 || index > 4) {
+      return;
+    }
+    setState(() => _selectedIndex = index);
+  }
+
+  List<Widget> _pages() {
+    return [
+      HomeDashboard(onNavigateTab: _navigateToTab),
+      BrewStudioPage(onNavigateTab: _navigateToTab),
+      RoastShelfPage(onNavigateTab: _navigateToTab),
+      CommunityFeedPage(onNavigateTab: _navigateToTab),
+      ProfilePage(onNavigateTab: _navigateToTab),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
+    final pages = _pages();
     return Scaffold(
       extendBody: true,
       body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 320),
         switchInCurve: Curves.easeOutCubic,
         switchOutCurve: Curves.easeInCubic,
         transitionBuilder: (child, animation) {
           final offset = Tween<Offset>(
-            begin: const Offset(0.03, 0.04),
+            begin: const Offset(0.03, 0.02),
             end: Offset.zero,
           ).animate(animation);
           return FadeTransition(
@@ -44,13 +54,12 @@ class _RoastLabShellState extends State<RoastLabShell> {
         },
         child: KeyedSubtree(
           key: ValueKey(_selectedIndex),
-          child: _pages[_selectedIndex],
+          child: pages[_selectedIndex],
         ),
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
-        onDestinationSelected: (value) =>
-            setState(() => _selectedIndex = value),
+        onDestinationSelected: _navigateToTab,
         height: 74,
         destinations: const [
           NavigationDestination(
