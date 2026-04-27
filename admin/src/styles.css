@@ -1,0 +1,166 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, system-ui, sans-serif;
+  background: #0b0807;
+  color: #f5efe7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #241813, #0b0807 58%);
+}
+
+.admin-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+}
+
+.sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 28px;
+  background: rgba(16, 11, 9, 0.92);
+}
+
+.brand {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.brand-copy {
+  color: #b5a596;
+  line-height: 1.5;
+}
+
+.nav {
+  display: grid;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.nav-link {
+  color: #f5efe7;
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.nav-link.active {
+  background: rgba(215, 173, 129, 0.14);
+  color: #f1c89d;
+}
+
+.content {
+  padding: 28px;
+}
+
+.page-head h1 {
+  margin: 0;
+}
+
+.page-head p {
+  color: #b5a596;
+}
+
+.stats-grid,
+.grid-two {
+  display: grid;
+  gap: 16px;
+}
+
+.stats-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 18px 0;
+}
+
+.grid-two {
+  grid-template-columns: minmax(0, 380px) 1fr;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 22px;
+  padding: 20px;
+}
+
+.stat-card {
+  display: grid;
+  gap: 8px;
+}
+
+.label,
+.caption,
+.panel-head span,
+.video-item p {
+  color: #b5a596;
+}
+
+.value {
+  font-size: 2rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 14px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.form input,
+.form textarea,
+.form button {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  font: inherit;
+}
+
+.form input,
+.form textarea {
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+}
+
+.form button {
+  background: #d7ad81;
+  color: #140f0c;
+  font-weight: 700;
+}
+
+.video-list {
+  display: grid;
+  gap: 12px;
+}
+
+.video-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 1024px) {
+  .admin-shell,
+  .grid-two,
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

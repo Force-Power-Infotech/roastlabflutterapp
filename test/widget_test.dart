@@ -1,38 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:roastlab/main.dart';
+import 'package:roastlab/app.dart';
 
 void main() {
-  testWidgets('shows onboarding and complete app flow', (
-    WidgetTester tester,
-  ) async {
-    await tester.pumpWidget(const MyApp());
+  testWidgets('boots into the RoastLab splash experience', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+
+    await tester.pumpWidget(const ProviderScope(child: RoastLabBootstrap()));
 
     expect(find.text('RoastLab'), findsOneWidget);
-    expect(find.text('Enter App'), findsOneWidget);
-
-    await tester.tap(find.text('Enter App'));
-    await tester.pumpAndSettle();
-
-    expect(find.byType(NavigationBar), findsOneWidget);
-    expect(find.text('RoastLab'), findsOneWidget);
-
-    await tester.tap(find.text('Brew'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Brew Studio'), findsOneWidget);
-
-    await tester.tap(find.text('Roast'));
-    await tester.pumpAndSettle();
-    expect(find.text('Roast Shelf'), findsOneWidget);
-
-    await tester.tap(find.text('Feed'));
-    await tester.pumpAndSettle();
-    expect(find.text('Community'), findsOneWidget);
-
-    await tester.tap(find.text('You'));
-    await tester.pumpAndSettle();
-    expect(find.text('Your Profile'), findsOneWidget);
+    expect(find.text('Coffee intelligence for every brew'), findsOneWidget);
   });
 }

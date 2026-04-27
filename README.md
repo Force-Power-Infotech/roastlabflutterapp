@@ -1,118 +1,95 @@
-# RoastLab: Premium AI Coffee Intelligence
+# RoastLab
 
-RoastLab is a modern, production-grade mobile-first web application designed for coffee enthusiasts, home brewers, and professional roasters. It leverages Google's Gemini AI to analyze roast colors and grind sizes via the camera, alongside a suite of brewing tools and a community platform.
+RoastLab is a full-stack coffee companion platform with three workspaces:
 
----
+- Flutter mobile app at the repo root for Android and iOS
+- `backend/` Node.js + Express API with MongoDB models and Firebase-ready auth middleware
+- `admin/` React admin panel for moderation, premium users, video management, and analytics
 
-## 🎨 Design Philosophy
-RoastLab uses a **Dark Luxury / Coffee-Themed** aesthetic:
-- **Primary Palette**: Deep Blacks (`#0C0B0A`), Warm Cremas (`#D4A373`), and Earthy Browns.
-- **Glassmorphism**: Backdrop blurs and semi-transparent surfaces for a modern, floating UI feel.
-- **Micro-animations**: Powered by `motion/react` for fluid screen transitions and interactive feedback.
-- **Typography**: `Outfit` for technical display headers and `Inter` for highly legible UI elements.
+## Mobile app highlights
 
----
+- Splash, onboarding, login, signup, OTP, forgot password
+- Bottom-tab shell: Home, Scan, Feed, Learn, Profile
+- Camera-based roast and grind analysis using on-device image heuristics
+- Brew calculator with Espresso, French Press, Pour Over, Aeropress, and Cold Brew
+- Recipe saving, roast journal, notifications, premium plans, profile, and settings
+- Embedded YouTube learning screen
+- AI Coffee Coach with contextual troubleshooting prompts
 
-## 🚀 Core Features
+## Backend highlights
 
-### 1. AI Scan Engine
-- **Roast Meter**: Captures whole bean images and estimates **Agtron Roast Scores**, roast levels (Light to Dark), and consistency percentages.
-- **Grind Detection**: Analyzes coffee grounds to determine average size (Fine to Coarse) and detects particle distribution uniformity.
-- **Save to History**: Users can instantly persist scan results to the cloud for longitudinal tracking.
+- Express app with modular routes and controllers
+- MongoDB collections for `Users`, `Scans`, `RoastHistory`, `GrindHistory`, `Posts`, `Comments`, `Likes`, `Recipes`, `Subscriptions`, `Videos`, and `Notifications`
+- Firebase Admin verification hook with a local dev fallback when bearer tokens are not supplied
+- Admin analytics endpoints for users, premium counts, moderation load, and content inventory
 
-### 2. AI Coffee Coach
-- A real-time chat interface powered by **Gemini pro/flash** models.
-- Acts as a digital barista to help troubleshoot brewing issues, explain chemical extractions, or recommend dial-in settings.
+## Admin panel highlights
 
-### 3. Brew Assistant
-- Interactive calculator for **V60, Aeropress, French Press, Chemex, and Espresso**.
-- Dynamically adjusts water/coffee ratios based on desired weight.
-- Provides specific temperature and grind size recommendations for each method.
+- Analytics dashboard with charting
+- User table for subscription and role review
+- Video management screen for Learn content publishing
 
-### 4. Expert Academy
-- Categorized learning center for Brewing, Roasting, Latte Art, and Coffee Theory.
-- Video-first interface designed for mobile scannability.
+## Project structure
 
-### 5. Community Feed
-- Instagram-inspired social platform for sharing brews and roasts.
-- Supports Likes, Comments, and location-based tagging.
-
----
-
-## 🏗️ Project Architecture
-
-### Folder Structure
 ```text
-/
-├── src/
-│   ├── components/       # Reusable UI widgets and layout shells
-│   │   └── Scanner/      # Camera handling and canvas logic
-│   ├── context/          # Global State (Auth, Theme)
-│   ├── lib/              # Third-party SDK initializations (Firebase)
-│   ├── services/         # API wrappers (Gemini AI Service)
-│   ├── screens/          # Main logical pages
-│   │   ├── Main/         # core Bottom-Nav screens (Home, Feed, Learn, Profile)
-│   │   └── Features/     # Distinct tools (AI Coach, Brew Calc)
-│   ├── types/            # TypeScript interfaces
-│   ├── App.tsx           # Main router & layout navigation
-│   └── index.css         # Global styles & Tailwind config
-├── server.ts             # Express.js production server
-├── firebase-blueprint.json # Data schema documentation
-└── firestore.rules       # Security logic for database
+roastlab/
+|-- lib/                  Flutter app source
+|-- assets/icons/         Launcher and splash art
+|-- assets/images/        Reserved for future content assets
+|-- backend/              Express API and Mongo models
+|-- admin/                React admin panel
+|-- android/ ios/ ...     Flutter platform folders
 ```
 
-### Tech Stack
-- **Frontend**: React 19, Vite, Tailwind CSS 4.
-- **Backend**: Node.js, Express.
-- **Database/Auth**: Firebase Firestore & Firebase Authentication.
-- **AI**: Gemini AI via `@google/genai` SDK.
-- **Animation**: `motion/react`.
-- **Icons**: `lucide-react`.
+## Setup
 
----
+### 1. Flutter mobile app
 
-## 🔐 Database Schema (Firestore)
+Install Flutter locally, then from the repo root:
 
-- **`users`**: Profiles, subscription status (Pro/Free), and XP.
-- **`scans`**: Historical data of roast and grind analysis.
-- **`posts`**: Community content.
-- **`recipes`**: Saved brewing parameters.
-- **`comments/likes`**: Engagement relationships.
+```bash
+flutter pub get
+flutter run
+```
 
----
+Optional native asset generation:
 
-## 🛠️ Getting Started
+```bash
+flutter pub run flutter_launcher_icons
+flutter pub run flutter_native_splash:create
+```
 
-### Local Development
-1. **Configure Environment**:
-   Ensure `GEMINI_API_KEY` is set in your environment variables.
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-3. **Run Dev Server**:
-   ```bash
-   npm run dev
-   ```
+### 2. Backend
 
-### Production Build
-1. **Build Assets**:
-   ```bash
-   npm run build
-   ```
-2. **Start Server**:
-   ```bash
-   npm start
-   ```
+```bash
+cd backend
+npm install
+cp .env.example .env
+npm run dev
+```
 
----
+Required environment values:
 
-## 🛠️ Security
-All data is protected via **Attribute-Based Access Control (ABAC)** in Firestore Security Rules.
-- Users can only read/write their own private scans.
-- Public feed data is read-only for guest users.
-- Identity integrity is verified via `request.auth.uid`.
+- `MONGODB_URI`
+- `FIREBASE_PROJECT_ID`
+- `FIREBASE_CLIENT_EMAIL`
+- `FIREBASE_PRIVATE_KEY`
 
----
+### 3. Admin panel
 
-Developed for **RoastLab Inc.** - "Coffee Intelligence for Everyone."
+```bash
+cd admin
+npm install
+npm run dev
+```
+
+Optional admin environment values:
+
+- `VITE_API_BASE_URL`
+- `VITE_ADMIN_TOKEN`
+
+## Notes
+
+- The mobile app defaults to working local state so the UI and flows remain usable before external services are wired.
+- The scan engine is intentionally abstracted behind providers, which makes it straightforward to replace the current heuristic analyzer with a server model or TensorFlow Lite module later.
+- Firebase mobile client setup files such as `google-services.json` and `GoogleService-Info.plist` are still environment-specific and should be added per deployment target.
