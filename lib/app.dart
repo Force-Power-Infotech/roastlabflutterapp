@@ -128,47 +128,55 @@ class _RoastLabWebWrapperState extends State<RoastLabWebWrapper> {
   @override
   void initState() {
     super.initState();
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0xFF0E0A08))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            if (!mounted) {
-              return;
-            }
-            setState(() {
-              _progress = progress / 100;
-            });
-          },
-          onPageStarted: (_) {
-            if (!mounted) {
-              return;
-            }
-            setState(() {
-              _errorMessage = null;
-              _progress = 0;
-            });
-          },
-          onPageFinished: (_) {
-            if (!mounted) {
-              return;
-            }
-            setState(() {
-              _progress = 1;
-            });
-          },
-          onWebResourceError: (WebResourceError error) {
-            if (!mounted) {
-              return;
-            }
-            setState(() {
-              _errorMessage = error.description;
-            });
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse(roastLabWebsiteUrl));
+    _controller =
+        WebViewController(
+            onPermissionRequest: (WebViewPermissionRequest request) {
+              request.grant();
+            },
+          )
+          ..setJavaScriptMode(JavaScriptMode.unrestricted)
+          ..setBackgroundColor(const Color(0xFF0E0A08))
+          ..setNavigationDelegate(
+            NavigationDelegate(
+              onNavigationRequest: (NavigationRequest request) {
+                return NavigationDecision.navigate;
+              },
+              onProgress: (int progress) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {
+                  _progress = progress / 100;
+                });
+              },
+              onPageStarted: (_) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {
+                  _errorMessage = null;
+                  _progress = 0;
+                });
+              },
+              onPageFinished: (_) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {
+                  _progress = 1;
+                });
+              },
+              onWebResourceError: (WebResourceError error) {
+                if (!mounted) {
+                  return;
+                }
+                setState(() {
+                  _errorMessage = error.description;
+                });
+              },
+            ),
+          )
+          ..loadRequest(Uri.parse(roastLabWebsiteUrl));
   }
 
   Future<bool> _handleBackNavigation() async {

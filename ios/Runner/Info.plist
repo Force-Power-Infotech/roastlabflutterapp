@@ -43,6 +43,10 @@
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>RoastLab needs camera access so the website can scan and capture images.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>RoastLab needs microphone access so the website can record audio.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 </dict>
