@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'dart:async';
 
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -23,7 +25,139 @@ class RoastLabBootstrap extends StatelessWidget {
         ),
         scaffoldBackgroundColor: const Color(0xFF0E0A08),
       ),
-      home: const _LaunchGate(),
+      home: const _PermissionGate(),
+    );
+  }
+}
+
+class _PermissionGate extends StatefulWidget {
+  const _PermissionGate();
+
+  @override
+  State<_PermissionGate> createState() => _PermissionGateState();
+}
+
+class _PermissionGateState extends State<_PermissionGate> {
+  bool _isRequesting = true;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkPermissions();
+    });
+  }
+
+  Future<void> _checkPermissions() async {
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _isRequesting = true;
+      _errorMessage = null;
+    });
+
+    if (!Platform.isAndroid && !Platform.isIOS) {
+      _continueToApp();
+      return;
+    }
+
+    final Map<Permission, PermissionStatus> statuses = await <Permission>[
+      Permission.camera,
+      Permission.microphone,
+    ].request();
+
+    final bool hasCameraAccess = statuses[Permission.camera]?.isGranted == true;
+    final bool hasMicrophoneAccess =
+        statuses[Permission.microphone]?.isGranted == true;
+
+    if (hasCameraAccess && hasMicrophoneAccess) {
+      _continueToApp();
+      return;
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _isRequesting = false;
+      _errorMessage =
+          'Camera and microphone access are required for the in-app site to use video and audio features.';
+    });
+  }
+
+  void _continueToApp() {
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(builder: (_) => const _LaunchGate()),
+    );
+  }
+
+  Future<void> _openAppSettings() async {
+    await openAppSettings();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isRequesting) {
+      return const Scaffold(body: _SplashScreen());
+    }
+
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF140F0C), Color(0xFF0E0A08)],
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'assets/icons/roastlab_splash.png',
+                  width: 140,
+                  height: 140,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Camera access is required',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  _errorMessage ??
+                      'Enable camera and microphone permissions to continue into RoastLab.',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Color(0xFFCFB8A3)),
+                ),
+                const SizedBox(height: 24),
+                FilledButton.icon(
+                  onPressed: _checkPermissions,
+                  icon: const Icon(Icons.refresh_rounded),
+                  label: const Text('Try again'),
+                ),
+                TextButton(
+                  onPressed: _openAppSettings,
+                  child: const Text('Open app settings'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
